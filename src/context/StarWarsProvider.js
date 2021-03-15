@@ -80,7 +80,7 @@ function StarWarsProvider({ children }) {
           Planet,
           filter.column,
           filter.comparison,
-          filter.value, filter,
+          filter.value,
         )
       ))));
     };
