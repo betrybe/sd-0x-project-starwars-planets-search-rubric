@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1.4.4
+      - id: eslint-step
         with:
           node-version: '12'
       - name: ESLint
@@ -20,6 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1.4.4
+      - id: stylelint-step
         with:
           node-version: '12'
       - name: Stylelint
@@ -43,6 +45,7 @@ jobs:
           repository-test-branch: 'master'
       - name: Store evaluation step
         uses: betrybe/store-evaluation-action@v2
+        if: steps.stylelint-step.outputs.conclusion == 'success' && steps.eslint-step.outputs.conclusion == 'success'
         with:
           evaluation-data: ${{ steps.evaluator.outputs.result }}
           environment: staging
