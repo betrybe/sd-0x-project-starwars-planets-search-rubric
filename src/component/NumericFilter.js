@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import Context from '../context';
 
-const filterOptions = ['population', 'orbital_period', 'diameter',
+const filterOptions = ['orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
 function NumericFilter() {
   const { filter, setFilter } = useContext(Context);
