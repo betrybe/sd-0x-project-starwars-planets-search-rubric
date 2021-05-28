@@ -15,7 +15,7 @@ jobs:
   foo:
     # Qual sistema operacional o job vai rodar. Nesse caso no Ubuntu. (ref: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
     runs-on: ubuntu-latest
-steps:
+    steps:
       # Cada step tem que ter um nome
       - name: Checkout do código
         # Esse step vai usar uma action (é tipo um pacote do npm: código pronto pra fazer coisas pra gente). Já existe action pra praticamente qualquer coisa interessante que vc precise fazer que não seja incomum/específica demais. Essa action vai pegar o código e "jogar" ele no Ubuntu que vc pediu pra rodar seu workflow. (ref: https://github.com/actions/checkout)
