@@ -1,0 +1,46 @@
+#  Nome do Workflow (ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#name)
+name: Workflow do deploy de produção
+
+# Quando o workflow vai ser acionado (ref: https://docs.github.com/en/actions/reference/events-that-trigger-workflows)
+# Se vc está começando foca em usar bem o "push" e o "pull_request"
+on:
+  pull_request:
+    branch:
+      # Nesse caso esse workflow vai rodar sempre que tiver um Pull Request para a branch summers
+      - "summers" # Nesse caso esse workflow vai rodar sempre que tiver um Pull Request para a branch summers
+
+# Agora é a lista de 'jobs' que o workflow vai rodar (ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs). Um workflow tem que ter pelo menos um job, mas pode ter vários: um job de lint, um de stylelint, um de deploy...
+jobs:
+  # Nome do job. Nesse caso vai ser 'deploy'
+  deploy:
+    # Qual sistema operacional o job vai rodar. Nesse caso no Ubuntu. (ref: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
+    runs-on: ubuntu-latest
+    # Cada job tem uma série de steps. É nos steps que "a coisa roda". Um step pode rodar um comando, rodar uma task de setup, rodar uma GitHub Action, e por aí vai. Pensa que quando vc vai fazer o step vc está com o terminal aberto e só falta digitar o comando. (ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps)
+    steps:
+      # Cada step tem que ter um nome
+      - name: Checkout do código
+        # Esse step vai usar uma action (é tipo um pacote do npm: código pronto pra fazer coisas pra gente). Já existe action pra praticamente qualquer coisa interessante que vc precise fazer que não seja incomum/específica demais. Essa action vai pegar o código e "jogar" ele no Ubuntu que vc pediu pra rodar seu workflow. (ref: https://github.com/actions/checkout)
+        uses: actions/checkout@v1
+      # Esse é o segundo step do nosso job de deploy. Depois de fazer o checkout do código, vamos instalar as dependencias que o Ubuntu precisa.
+      - name: Instalar o NodeJS 14
+        # Novamente vamos usar uma action pra facilitar nossa vida. (ref: https://github.com/actions/setup-node)
+        uses: actions/setup-node@v1
+        # O with é uma forma de passar variáveis/configs para dentro das actions. Bom para customizar/flexibilizar sua action
+        with:
+          # Nesse caso essa variável vai ser acessível dentro da action como INPUT_NODE_VERSION
+          node-version: 14
+      # O run é onde a gente coloca o comando que quer rodar dentro step. Aqui estamos no setp "Instalar o NodeJS", e já usamos uma action "setup-node" para instalar o NodeJS no Ubuntu do workflow. Então agora estamos prontos para instalar as dependências do projeto. (ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsrun)
+      - run: npm install
+      - run: npm run build --if-present
+      # No terceiro step já temos o projeto pronto, "buildado". Agora precisamos fazer o deploy!
+      - name: Deployar no Netlify
+        # Novamente vamos usar uma action para facilitar a nossa vida. Essa aqui instala o CLI do Netlify (ref: https://github.com/netlify/cli)
+        uses: netlify/actions/cli@master
+        # # O with é uma forma de passar variáveis de ambiente para dentro das actions. Se a action precisar de alguma configuraçãod e variável de ambiente, ela provavelmente vai falar isso no README. Se não falar, nem compensa usar, rs. (ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsenv)
+        env:
+          # Aqui estamos acessando as variáveis de ambiente que configuramos lá no início. Repare na forma de acessá-las, na sintaxe.
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=build --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
