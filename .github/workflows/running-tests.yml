@@ -20,7 +20,7 @@ jobs:
       # Daqui pra cima não tem segredo, é o mesmo processo do workflow anterior. Então agora que já temos tudo pronto vamos rodar o script de lint definido no projeto
       - name: Rodar o ESLint
         run: npm run lint
-  styleint:
+  stylelint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
