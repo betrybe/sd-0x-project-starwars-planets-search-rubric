@@ -1,5 +1,5 @@
 #  Nome do Workflow (ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#name)
-name: Production workflow
+name: Workflow do deploy de produção
 
 # Quando o workflow vai ser acionado (ref: https://docs.github.com/en/actions/reference/events-that-trigger-workflows)
 # Se vc está começando foca em usar bem o "push" e o "pull_request"
