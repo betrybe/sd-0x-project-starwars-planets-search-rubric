@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: npm install
       # Daqui pra cima não tem segredo, é o mesmo processo do workflow anterior. Então agora que já temos tudo pronto vamos rodar o script de lint definido no projeto
       - name: Rodar o ESLint
         run: npm run lint
@@ -29,6 +30,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: npm install
       - name: Rodar o Stylelint
         run: npm run lint:styles
   tests:
@@ -42,5 +44,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: npm install
       - name: Rodar os testes
         run: npm test
