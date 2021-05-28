@@ -12,6 +12,11 @@ on:
 # Agora é a lista de 'jobs' que o workflow vai rodar (ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs). Um workflow tem que ter pelo menos um job, mas pode ter vários: um job de lint, um de styleint, um de deploy...
 jobs:
   # Nome do job. Nesse caso vai ser 'deploy'
+  foo:
+    # Qual sistema operacional o job vai rodar. Nesse caso no Ubuntu. (ref: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
+    runs-on: ubuntu-latest
+      - run: echo "hello"
+  # Nome do job. Nesse caso vai ser 'deploy'
   deploy:
     # Qual sistema operacional o job vai rodar. Nesse caso no Ubuntu. (ref: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
     runs-on: ubuntu-latest
