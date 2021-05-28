@@ -3,8 +3,8 @@ name: Testes do projeto
 
 # Quando o workflow vai ser acionado (trigger)
 on:
-  push:
-    branches:
+  pull_request:
+    branch:
       - "summers"
 
 jobs:
